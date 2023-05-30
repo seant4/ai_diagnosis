@@ -3,10 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import os
-
-def one_hot_encoding(data):
-    encoded_data = pd.get_dummies(data)
-    return encoded_data
+from util import *
 
 def formatData():
     x_train = pd.read_csv("../data/x_train.csv")
@@ -42,6 +39,16 @@ def createModel(x_train, y_train, symptom_results, args):
         model = tf.keras.models.load_model('saved_models/model')
         return model 
 
+def predict(x, model, symptom_results, y_labels):
+    x_index = x.astype(int)
+    x_index = x_index.tolist()
+    for i in range(len(x)):
+        if(x[i] != 81):
+            print("Symptom: {0}, at given index[{1}]".format(symptom_results[x_index[i]], x_index[i]))
+    x = x[np.newaxis,:]
+    result = model.predict(x) 
+    printResult(result, y_labels)
+
 def main():
     x_train, y_train, symptom_results, y_labels = formatData()
     #y_train_labels is the list of possible diagnosis
@@ -49,14 +56,7 @@ def main():
     x_train = x_train / 132
     y_train = one_hot_encoding(y_train)
     model = createModel(x_train, y_train, symptom_results, 0)
-    test = np.array([84,55,114,116,81,81,81,81,81,81,81,81,81,81,81.0,81,81])
-    test_cast = test.astype(int)
-    test_cast = test_cast.tolist()
-    for i in range(len(test)):
-        print("Symptom: {0}, at given index[{1}]".format(symptom_results[test_cast[i]], test_cast[i]))
-    test = test[np.newaxis,:] 
-    result = model.predict(test)
-    for i in range(len(result[0])):
-        if(result[0][i] == 1):
-            print("Diagnosis: {0}, given index[{1}]".format(y_labels[i], i))
+    test_data = format_x(np.array([84,55,114,116]))
+    predict(test_data, model, symptom_results, y_labels)
+
 main()
