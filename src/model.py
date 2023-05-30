@@ -48,7 +48,7 @@ def main():
     #y_train will be just the indicies
     x_train = x_train / 132
     y_train = one_hot_encoding(y_train)
-    model = createModel(x_train, y_train, symptom_results, 1)
+    model = createModel(x_train, y_train, symptom_results, 0)
     test = np.array([84,55,114,116,81,81,81,81,81,81,81,81,81,81,81.0,81,81])
     test_cast = test.astype(int)
     test_cast = test_cast.tolist()
