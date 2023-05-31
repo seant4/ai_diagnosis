@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import tensorflowjs as tfjs
 import os
 from util import *
 
@@ -56,7 +57,9 @@ def main():
     x_train = x_train / 132
     y_train = one_hot_encoding(y_train)
     model = createModel(x_train, y_train, symptom_results, 0)
+    #tfjs.converters.save_keras_model(model, 'web_model/model')
     test_data = format_x(np.array([84,55,114,116]))
     predict(test_data, model, symptom_results, y_labels)
+
 
 main()
