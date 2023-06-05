@@ -7,8 +7,7 @@ def printResult(result, y_labels):
 
 
 def one_hot_encoding(data):
-    encoded_data = to_categorical(data)
-    return encoded_data
+    return (pd.get_dummies(data['Disease']))
 
 def format_x(x):
     for i in range((17-len(x))):
