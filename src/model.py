@@ -32,8 +32,8 @@ def createModel(x_train, y_train, symptom_results, args):
         model.compile(optimizer='adam',
                       loss='mse',
                       metrics=['accuracy'])
-
-        history = model.fit(x_train.to_numpy(), y_train, epochs=50, callbacks=[cp_callback])
+        x_train = x_train.to_numpy()
+        history = model.fit(x_train, y_train, epochs=50,batch_size = 32, callbacks=[cp_callback])
         model.save('saved_models/model')
         return model
     else:
@@ -56,7 +56,7 @@ def main():
     #y_train will be just the indicies
     x_train = x_train / 132
     y_train = one_hot_encoding(y_train)
-    model = createModel(x_train, y_train, symptom_results, 0)
+    model = createModel(x_train, y_train, symptom_results, 1)
     #tfjs.converters.save_keras_model(model, 'web_model/model')
     test_data = format_x(np.array([84,55,114,116]))
     predict(test_data, model, symptom_results, y_labels)

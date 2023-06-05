@@ -1,15 +1,18 @@
 <!DOCTYPE>
 <html>
   <head>
-<!-- Load TensorFlow.js -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.9.0"></script>
-<!-- Load the coco-ssd model. -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@1.1.0"</script>
-    <script src="../scripts/index.js"> </script>
+    <!-- Load TensorFlow.js -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.5/dist/tf.min.js"></script>
+    <script src="../scripts/index.js" defer> </script>
+    <script>
+    </script>
   </head>
   <body>
-  <div id="model_out">
-  Training... 
+    <div id = "symptoms" style="text-align: center"></div>
+  <div id="model_out" style="text-align:center">
   </div> 
+  <div id="button_div" style="text-align:center">
+    <button onclick="predictModel([[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]])">Submit</button>
+  </div>
   </body>
 </html>
