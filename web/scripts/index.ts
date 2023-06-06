@@ -13,26 +13,38 @@ function predictModel(){
   (async() => { 
     const model: any = await tf.loadModel("http://localhost:8080/model.json");
     const result: any = model.predict(tf.tensor([x])).dataSync();
-    console.log(result);
     document.getElementById('model_out').innerText = "";
-    for(let i = 0; i < 41; i++){
-      //if(result[i] >= .3){
-        let p = document.createElement("p");
-        p.innerText = diagnosis[i] + ": " + result[i];
-        document.getElementById('model_out').appendChild(p);
-      //}
+    let predictions: object[] = [];    
+    for(let i = 0; i < result.length; i++){
+      predictions.push({label: diagnosis[i], match: result[i]});
     }
-    let b = document.createElement("button");
-    
+    predictions.sort((a,b)=> {return b.match - a.match;});
+    for(let i = 0; i < predictions.length; i++){
+
+      if(predictions[i].match >= .01){
+        let p = document.createElement("p");
+        p.innerText = predictions[i].label + ": " + Math.floor((predictions[i].match * 100)) + "%";
+        document.getElementById('model_out').appendChild(p);
+      }
+    }
+    let b = document.createElement("button"); 
   })();
 }
 
 function createSymptoms(){
-  for(let i: number=0; i < 132; i++){
+  for(let i: number=0; i < symptom.length; i++){
+    symptom[i] = symptom[i].replaceAll('_', " ");
+    let words: string[] = symptom[i].split(" ");
+    for(let j: number = 0; j < words.length; j++){
+      words[j] = (words[j].substring(0,1)).toUpperCase() + words[j].substr(1);
+    }
+    symptom[i] = words.join(" ");
+  }
+  for(let i: number=0; i < 131; i++){
     let x: any = document.createElement("INPUT");
     let l: any = document.createElement("LABEL");
     l.setAttribute("for", i);
-    l.innerText = i + ": " + symptom[i];
+    l.innerText = symptom[i];
     x.setAttribute("type", "checkbox");
     x.name = i;
     x.value = "value";

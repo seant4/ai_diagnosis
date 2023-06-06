@@ -48,20 +48,25 @@ function predictModel() {
         }
     }
     (function () { return __awaiter(_this, void 0, void 0, function () {
-        var model, result, i, p, b;
+        var model, result, predictions, i, i, p, b;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, tf.loadModel("http://localhost:8080/model.json")];
                 case 1:
                     model = _a.sent();
                     result = model.predict(tf.tensor([x])).dataSync();
-                    console.log(result);
                     document.getElementById('model_out').innerText = "";
-                    for (i = 0; i < 41; i++) {
-                        p = document.createElement("p");
-                        p.innerText = diagnosis[i] + ": " + result[i];
-                        document.getElementById('model_out').appendChild(p);
-                        //}
+                    predictions = [];
+                    for (i = 0; i < result.length; i++) {
+                        predictions.push({ label: diagnosis[i], match: result[i] });
+                    }
+                    predictions.sort(function (a, b) { return b.match - a.match; });
+                    for (i = 0; i < predictions.length; i++) {
+                        if (predictions[i].match >= .01) {
+                            p = document.createElement("p");
+                            p.innerText = predictions[i].label + ": " + Math.floor((predictions[i].match * 100)) + "%";
+                            document.getElementById('model_out').appendChild(p);
+                        }
                     }
                     b = document.createElement("button");
                     return [2 /*return*/];
@@ -70,11 +75,19 @@ function predictModel() {
     }); })();
 }
 function createSymptoms() {
-    for (var i = 0; i < 132; i++) {
+    for (var i = 0; i < symptom.length; i++) {
+        symptom[i] = symptom[i].replaceAll('_', " ");
+        var words = symptom[i].split(" ");
+        for (var j = 0; j < words.length; j++) {
+            words[j] = (words[j].substring(0, 1)).toUpperCase() + words[j].substr(1);
+        }
+        symptom[i] = words.join(" ");
+    }
+    for (var i = 0; i < 131; i++) {
         var x = document.createElement("INPUT");
         var l = document.createElement("LABEL");
         l.setAttribute("for", i);
-        l.innerText = i + ": " + symptom[i];
+        l.innerText = symptom[i];
         x.setAttribute("type", "checkbox");
         x.name = i;
         x.value = "value";
