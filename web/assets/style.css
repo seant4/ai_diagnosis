@@ -1,0 +1,22 @@
+.checkmark{
+  float: right;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+.checkContainer{
+  padding: 15px;
+}
+
+.columns{
+  float: left;
+  width: 15%;
+  padding: 10px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}

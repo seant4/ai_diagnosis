@@ -41,16 +41,43 @@ function createSymptoms(){
     symptom[i] = words.join(" ");
   }
   for(let i: number=0; i < 131; i++){
+    let d: any = document.createElement("div");
     let x: any = document.createElement("INPUT");
     let l: any = document.createElement("LABEL");
+    let divName: string = "div" + i;
+    d.setAttribute("class", "checkContainer");
     l.setAttribute("for", i);
     l.innerText = symptom[i];
     x.setAttribute("type", "checkbox");
+    x.setAttribute("class", "checkmark");
     x.name = i;
     x.value = "value";
     x.id = i;
-    document.getElementById('symptoms').appendChild(l);
-    document.getElementById('symptoms').appendChild(x);
+    if(i < 22){
+      document.getElementById('column1').appendChild(d);
+      d.appendChild(l);
+      d.appendChild(x);
+    }else if(i >= 22 && i < 44){ 
+      document.getElementById('column2').appendChild(d);
+      d.appendChild(l);
+      d.appendChild(x);
+    }else if(i >= 44 && i < 66){
+      document.getElementById('column3').appendChild(d);
+      d.appendChild(l);
+      d.appendChild(x);
+    }else if(i >= 66 && i < 88){
+      document.getElementById('column4').appendChild(d);
+      d.appendChild(l);
+      d.appendChild(x);
+    }else if(i >= 88 && i < 110){ 
+      document.getElementById('column5').appendChild(d);
+      d.appendChild(l);
+      d.appendChild(x);
+    }else{
+      document.getElementById('column6').appendChild(d);
+      d.appendChild(l);
+      d.appendChild(x);
+    }
   }
 }
 
